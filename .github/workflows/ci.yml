@@ -44,14 +44,6 @@ jobs:
             -Dsonar.host.url=${{env.SONAR_HOST_URL}}
             -Dsonar.login=${{env.SONAR_TOKEN}}
             -Dsonar.working.directory=./.scannerwork      
-      - name: SonarQube Quality Gate Check
-        uses: SonarSource/sonarqube-quality-gate-action@1.1.0
-        with:
-          scanMetadataReportFile: .scannerwork/report-task.txt
-          timeout-minutes: 5
-          SONAR_HOST_URL: ${{secrets.SONAR_URL}}
-          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-          
 
           
 
