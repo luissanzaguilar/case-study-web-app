@@ -28,11 +28,6 @@ jobs:
 
   sonar-cloud:
     runs-on: ubuntu-latest
-    env:
-      SONAR_HOST_URL: ${{secrets.SONAR_URL}}
-      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
-      SONAR_PROJECT_KEY: ${{vars.SONAR_PROJECT_KEY}}
-      SONAR_ORGANIZATION: ${{vars.SONAR_ORGANIZATION}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
@@ -41,11 +36,11 @@ jobs:
         with:
           projectBaseDir: .
           args: >
-            -Dsonar.projectKey=${{env.SONAR_PROJECT_KEY}}
-            -Dsonar.host.url=${{env.SONAR_HOST_URL}}
-            -Dsonar.login=${{env.SONAR_TOKEN}}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.host.url=${{ secrets.SONAR_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.working.directory=./.scannerwork     
-            -Dsonar.organization=${{env.SONAR_ORGANIZATION}}
-
+            
           
 
