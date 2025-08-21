@@ -16,6 +16,8 @@ jobs:
           distribution: 'temurin'
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
+
+        
       - name: Prepare artifact in staging
         run: mkdir staging && cp target/*.jar staging
       - name: Upload a Build Artifact
@@ -23,3 +25,33 @@ jobs:
         with:
           name: Package
           path: staging
+
+  sonar-cloud:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_HOST_URL: ${{secrets.SONAR_URL}}
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      SONAR_PROJECT_KEY: ${{vars.SONAR_PROJECT_KEY}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+      - name: Official SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        with:
+          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=${{env.SONAR_PROJECT_KEY}}
+            -Dsonar.host.url=${{env.SONAR_HOST_URL}}
+            -Dsonar.login=${{env.SONAR_TOKEN}}
+            -Dsonar.working.directory=./.scannerwork      
+      - name: SonarQube Quality Gate Check
+        uses: SonarSource/sonarqube-quality-gate-action@1.1.0
+        with:
+          scanMetadataReportFile: .scannerwork/report-task.txt
+          timeout-minutes: 5
+          SONAR_HOST_URL: ${{secrets.SONAR_URL}}
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+          
+
+          
+
