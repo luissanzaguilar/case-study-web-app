@@ -54,7 +54,6 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.working.directory=./.scannerwork
             -Dsonar.java.binaries=target/classes
-                  - name: SonarQube Quality Gate Check
                   
       - name: Official SonarQube Quality Gate
         uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
