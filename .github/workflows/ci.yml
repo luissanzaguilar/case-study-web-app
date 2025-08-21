@@ -57,7 +57,7 @@ jobs:
                   - name: SonarQube Quality Gate Check
                   
       - name: Official SonarQube Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@1.2.0
+        uses: SonarSource/sonarqube-quality-gate-action@v1.2.0
         with:
           scanMetadataReportFile: .scannerwork/report-task.txt
           timeout-minutes: 5
