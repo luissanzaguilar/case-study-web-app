@@ -85,7 +85,23 @@ jobs:
         # docker push $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
-
+          
+  deploy:
+    needs: push-docker
+    runs-on: self-hosted
+    steps:
+      - name: Docker Login
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{env.DOCKER_USERNAME}}
+          password: ${{env.DOCKER_PASSWORD}}
+      - name: Pull docker image
+        # docker pull $DOCKER_IMAGE:${{github.sha}}          
+        run: |
+          docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+      - name: Docker run
+        run: |
+          docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
 
           
