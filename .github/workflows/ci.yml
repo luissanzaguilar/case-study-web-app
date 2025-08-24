@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  DOCKER_IMAGE: spring-boot-web-main
+  DOCKER_IMAGE: case-study-web-app
   DOCKER_USERNAME: luissanzaguilar
   DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
 
