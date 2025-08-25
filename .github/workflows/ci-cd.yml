@@ -164,7 +164,8 @@ jobs:
       - push-docker
       - deploy-staging
       - deploy-prod
-    if: | always() && 
+    if: | 
+          always() && 
           (needs.build.result == 'failure' || 
           needs.sonar-cloud.result == 'failure' ||
           needs.push-docker.result == 'failure' ||
