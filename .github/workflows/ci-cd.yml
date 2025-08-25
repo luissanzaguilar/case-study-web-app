@@ -164,12 +164,12 @@ jobs:
       - push-docker
       - deploy-staging
       - deploy-prod
-    if: |
-          needs.build.result == 'failure' || 
+    if: | always() && 
+          (needs.build.result == 'failure' || 
           needs.sonar-cloud.result == 'failure' ||
           needs.push-docker.result == 'failure' ||
           needs.deploy-staging.result == 'failure' ||
-          needs.deploy-prod.result == 'failure' 
+          needs.deploy-prod.result == 'failure')
     steps:
       - name: Print failed jobs
         run: |
