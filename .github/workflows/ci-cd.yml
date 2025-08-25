@@ -164,17 +164,31 @@ jobs:
       - push-docker
       - deploy-staging
       - deploy-prod
-    if: contains(needs.*.result, 'failure')
+    if: |
+          needs.build.result == 'failure' || 
+          needs.sonar-cloud.result == 'failure' ||
+          needs.push-docker.result == 'failure' ||
+          needs.deploy-staging.result == 'failure' ||
+          needs.deploy-prod.result == 'failure' 
     steps:
       - name: Print failed jobs
         run: |
           failed_jobs=""
-          {{ range needs }}
-            if [ "${{ result }}" = "failure" ]
-            then
-              failed_jobs="$failed_jobs ${{ job }}"
-            fi
-          {{ end }}
+          if [ "${{ needs.build.result }}" = "failure" ]; then
+            failed_jobs="$failed_jobs build"
+          fi
+          if [ "${{ needs.sonar-cloud.result }}" = "failure" ]; then
+            failed_jobs="$failed_jobs build"
+          fi
+          if [ "${{ needs.push-docker.result }}" = "failure" ]; then
+            failed_jobs="$failed_jobs build"
+          fi
+          if [ "${{ needs.deploy-staging.result }}" = "failure" ]; then
+            failed_jobs="$failed_jobs build"
+          fi
+          if [ "${{ needs.deploy-prod.result }}" = "failure" ]; then
+            failed_jobs="$failed_jobs build"
+          fi
           echo "Failed jobs: $failed_jobs"
                     
           
