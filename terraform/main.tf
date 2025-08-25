@@ -11,7 +11,6 @@ data "aws_ami" "amazon-linux" {
 }
 
 resource "aws_iam_instance_profile" "role_terraform" {
-  id = "role-terraform"
   name = "role-terraform"
   role = "role-terraform"
   path = "/"
