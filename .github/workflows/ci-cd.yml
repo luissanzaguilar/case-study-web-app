@@ -16,22 +16,22 @@ jobs:
   build:
     name: Build and Test (${{ matrix.distribution }})
     runs-on: ubuntu-latest
-        strategy:
-          matrix:
-            distribution: [temurin, corretto, liberica, microsoft]
-            include:
-              - distribution: temurin
-                jdk-version: '21'
-                display-name: Eclipse Temurin 21
-              - distribution: corretto  
-                jdk-version: '21'
-                display-name: Amazon Corretto 21
-              - distribution: liberica
-                jdk-version: '21'
-                display-name: BellSoft Liberica 21
-              - distribution: zulu
-                jdk-version: '21'
-                display-name: Microsoft 21
+    strategy:
+      matrix:
+        distribution: [temurin, corretto, liberica, microsoft]
+        include:
+          - distribution: temurin
+            jdk-version: '21'
+            display-name: Eclipse Temurin 21
+          - distribution: corretto  
+            jdk-version: '21'
+            display-name: Amazon Corretto 21
+          - distribution: liberica
+            jdk-version: '21'
+            display-name: BellSoft Liberica 21
+          - distribution: zulu
+            jdk-version: '21'
+            display-name: Microsoft 21
     steps:
       - name: Checkout
         uses: actions/checkout@v4.2.2
