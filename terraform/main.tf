@@ -1,13 +1,21 @@
 
 data "aws_ami" "amazon-linux" {
   most_recent = true
+  owners = ["amazon"] # Canonical
 
   filter {
     name   = "name"
-    values = ["al2023-ami-2023.8.20250818.0-kernel-6.1-x86_64"]
+    values = ["al2023-ami-*"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
   }
 
-  owners = ["099720109477"] # Canonical
+  filter {
+    name   = "state"
+    values = ["available"]
+  }
 }
 
 resource "aws_iam_instance_profile" "role_terraform" {
