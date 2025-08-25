@@ -1,8 +1,12 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   workflow_dispatch:
-
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+    
 env:
   DOCKER_IMAGE: case-study-web-app
   DOCKER_USERNAME: luissanzaguilar
@@ -20,9 +24,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
-
-        
+        run: mvn --batch-mode --update-snapshots verify       
       - name: Prepare artifact in staging
         run: mkdir staging && cp target/*.jar staging
       - name: Upload a Build Artifact
@@ -32,6 +34,7 @@ jobs:
           path: staging
 
   sonar-cloud:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -68,6 +71,7 @@ jobs:
           scanMetadataReportFile: .scannerwork/report-task.txt
           
   push-docker:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -86,9 +90,9 @@ jobs:
         run: |
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
           
-  deploy:
-    needs: push-docker
-    runs-on: self-hosted
+  deploy-staging:
+    needs: [push-docker, sonar-cloud]
+    runs-on: self-hosted-staging
     steps:
       - name: Docker Login
         uses: docker/login-action@v3.4.0
@@ -99,10 +103,26 @@ jobs:
         # docker pull $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
-      - name: Docker run
+      - name: Docker run STAGING
         run: |
           docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
+  deploy-prod:
+    needs: deploy-staging
+    runs-on: self-hosted-staging
+    steps:
+      - name: Docker Login
+        uses: docker/login-action@v3.4.0
+        with:
+          username: ${{env.DOCKER_USERNAME}}
+          password: ${{env.DOCKER_PASSWORD}}
+      - name: Pull docker image
+        # docker pull $DOCKER_IMAGE:${{github.sha}}          
+        run: |
+          docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+      - name: Docker run PROD
+        run: |
+          docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
           
           
