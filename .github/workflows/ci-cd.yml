@@ -199,15 +199,18 @@ jobs:
     if: success()    
     
     steps:
-      - name: Notify GitHub
+      - name: Create GitHub deployment status
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
+            github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Production Deployment Successful! Commit: ${{ github.sha }}'
-            });
+              deployment_id: context.runId,
+              state: 'success',
+              environment: 'prod',
+              description: 'Production deployment completed successfully',
+              environment_url: 'http://localhost:8080'
+              });
           
 
