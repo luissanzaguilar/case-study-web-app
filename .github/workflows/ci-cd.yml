@@ -111,7 +111,7 @@ jobs:
           docker run -d \
             --name $DOCKER_IMAGE \
             -p 8080:8080 \
-            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE"
+            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE" \
             $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
   deploy-prod:
@@ -135,7 +135,7 @@ jobs:
           docker run -d \
             --name $DOCKER_IMAGE \
             -p 8080:8080 \
-            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE"
+            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE" \
             $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
           
