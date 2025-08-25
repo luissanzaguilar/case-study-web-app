@@ -103,7 +103,9 @@ jobs:
         # docker pull $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
-      - name: Docker run STAGING
+      - name: Docker run STAGING ${{ vars.APP_WELCOME_MESSAGE }}
+        env:
+          APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
           docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
@@ -120,7 +122,9 @@ jobs:
         # docker pull $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
-      - name: Docker run PROD
+      - name: Docker run PROD ${{ vars.APP_WELCOME_MESSAGE }}
+        env:
+          APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
           docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
