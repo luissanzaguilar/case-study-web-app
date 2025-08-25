@@ -125,6 +125,8 @@ jobs:
         env:
           APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
+          docker stop case-study-web-app
+          docker rm case-study-web-app          
           docker run -d \
             --name $DOCKER_IMAGE \
             -p 8080:8080 \
@@ -149,6 +151,8 @@ jobs:
         env:
           APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
+          docker stop case-study-web-app
+          docker rm case-study-web-app          
           docker run -d \
             --name $DOCKER_IMAGE \
             -p 8080:8080 \
