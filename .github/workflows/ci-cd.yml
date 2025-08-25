@@ -93,6 +93,7 @@ jobs:
   deploy-staging:
     needs: [push-docker, sonar-cloud]
     runs-on: self-hosted-staging
+    environment: staging    
     steps:
       - name: Docker Login
         uses: docker/login-action@v3.4.0
@@ -107,11 +108,16 @@ jobs:
         env:
           APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
-          docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+          docker run -d \
+            --name $DOCKER_IMAGE \
+            -p 8080:8080 \
+            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE"
+            $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
   deploy-prod:
     needs: deploy-staging
     runs-on: self-hosted-prod
+    environment: prod
     steps:
       - name: Docker Login
         uses: docker/login-action@v3.4.0
@@ -126,7 +132,11 @@ jobs:
         env:
           APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
-          docker run -d -p 8080:8080 $DOCKER_USERNAME/$DOCKER_IMAGE:latest
+          docker run -d \
+            --name $DOCKER_IMAGE \
+            -p 8080:8080 \
+            -e APP_WELCOME_MESSAGE="$APP_WELCOME_MESSAGE"
+            $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
           
           
