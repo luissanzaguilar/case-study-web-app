@@ -29,7 +29,7 @@ jobs:
           - distribution: liberica
             jdk-version: '21'
             display-name: BellSoft Liberica 21
-          - distribution: zulu
+          - distribution: microsoft
             jdk-version: '21'
             display-name: Microsoft 21
     steps:
