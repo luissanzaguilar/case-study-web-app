@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: apply-output
-          path: /var/log/user-data.log
+          path: ./terraform/user-data.log
 
       - name: Success Notification
         if: success()
