@@ -105,7 +105,6 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $DOCKER_IMAGE:${{github.sha}} $DOCKER_USERNAME/$DOCKER_IMAGE:latest
       - name: Push docker image
-        # docker push $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
           
@@ -120,7 +119,6 @@ jobs:
           username: ${{env.DOCKER_USERNAME}}
           password: ${{env.DOCKER_PASSWORD}}
       - name: Pull docker image
-        # docker pull $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
       - name: Docker run STAGING
@@ -146,7 +144,6 @@ jobs:
           username: ${{env.DOCKER_USERNAME}}
           password: ${{env.DOCKER_PASSWORD}}
       - name: Pull docker image
-        # docker pull $DOCKER_IMAGE:${{github.sha}}          
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
       - name: Docker run PROD
