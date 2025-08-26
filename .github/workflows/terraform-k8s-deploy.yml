@@ -72,4 +72,4 @@ jobs:
         run: |
           echo "Terraform deployment success!"
           echo "ssh: $(terraform output -raw ssh_connection_command)"
-          echo "log execution of user-data: \var\log\user-data.log"
+          echo "log execution of user-data: /var/log/user-data.log"

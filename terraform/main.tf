@@ -121,7 +121,7 @@ resource "aws_instance" "app_terraform" {
               set -x
 
               # Create log file
-              exec > >(tee \var\log\user-data.log) 2>&1
+              exec > >(tee /var/log/user-data.log) 2>&1
               echo "=== EXECUTING USER_DATA == $(date) ==="
 
               echo "--- Update system ---"
