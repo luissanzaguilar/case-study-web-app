@@ -49,6 +49,7 @@ jobs:
         with:
           name: Package-${{ matrix.distribution }}
           path: staging
+          retention-days: 1
 
   sonar-cloud:
     needs: build
