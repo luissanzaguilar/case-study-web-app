@@ -98,12 +98,33 @@ resource "aws_security_group" "allow_web" {
   }
 }
 
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name = "vpc-con-dns-habilitado"
+  }
+}
+
+resource "aws_subnet" "main" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "subnet-con-dns"
+  }
+}
+
 resource "aws_instance" "app_terraform" {
   ami           = data.aws_ami.amazon-linux.id
   instance_type = "m7i-flex.large"
   key_name = "formacion"
-  iam_instance_profile = aws_iam_instance_profile.profile_terraform.name
+  iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
+  subnet_id              = aws_subnet.main.id
 
   user_data = <<-EOF
               #!/bin/bash
