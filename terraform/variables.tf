@@ -21,3 +21,10 @@ variable "environment" {
   type        = string
   default     = "prod"
 }
+
+variable "runner_token" {
+  description = "GitHub Actions Runner registration token"
+  type        = string
+  sensitive   = true  # ← Marcar como sensible para que no se muestre en logs
+}
+
