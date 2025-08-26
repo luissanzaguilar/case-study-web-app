@@ -136,7 +136,7 @@ jobs:
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
 
   deploy-k8s:
-    needs: push-docker
+    needs: [deploy-infra, push-docker]
     runs-on: self-hosted-k8s
     environment: prod
     steps:
