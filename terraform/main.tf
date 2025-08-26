@@ -109,8 +109,8 @@ data "aws_subnets" "default" {
 
 resource "aws_instance" "app_terraform" {
   ami           = data.aws_ami.amazon-linux.id
-  instance_type = "m7i-flex.large"
-  key_name = "formacion"
+  instance_type = var.instance_type
+  key_name = var.key_name
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
   subnet_id              = data.aws_subnets.default.ids[0]
@@ -156,6 +156,7 @@ resource "aws_instance" "app_terraform" {
 
   tags = {
     Name = "case-study-2-terraform"
+    Emvironment = var.environment
   }
 
   depends_on = [
@@ -164,23 +165,4 @@ resource "aws_instance" "app_terraform" {
   ]
 }
 
-output "instance_public_ip" {
-  description = "IP pública de la instancia"
-  value       = aws_instance.app_terraform.public_ip
-}
-
-output "ssh_connection_command" {
-  description = "Comando para conectarse por SSH"
-  value       = "ssh -i formacion.pem ec2-user@${aws_instance.app_terraform.public_ip}"
-}
-
-output "vpc_id" {
-  description = "ID de la VPC utilizada"
-  value       = data.aws_vpc.default.id
-}
-
-output "subnet_id" {
-  description = "ID de la subnet utilizada"
-  value       = data.aws_subnets.default.ids[0]
-}
 
