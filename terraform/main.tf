@@ -52,7 +52,7 @@ resource "aws_iam_instance_profile" "profile_terraform" {
 resource "aws_security_group" "allow_web" {
   name_prefix = "allow-web-terraform-"
   description = "Allow SSH, HTTP and HTTP traffic"
-  vpc_id = "vpc-0614669fa9bd8e9ca"
+  vpc_id = data.aws_vpc.default.id
 
   # Regla de entrada para SSH (puerto 22)
   ingress {
@@ -94,14 +94,17 @@ resource "aws_security_group" "allow_web" {
     Name = "allow-web-terraform"
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
-resource "aws_subnet" "main" {
-  vpc_id                  = "vpc-0614669fa9bd8e9ca"
-  map_public_ip_on_launch = true
+data "aws_vpc" "default" {
+  default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
 }
 
 resource "aws_instance" "app_terraform" {
@@ -110,7 +113,8 @@ resource "aws_instance" "app_terraform" {
   key_name = "formacion"
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
-  subnet_id              = aws_subnet.main.id
+  subnet_id              = data.aws_subnets.default.id[0]
+  associate_public_ip_address = true
 
   user_data = <<-EOF
               #!/bin/bash
@@ -156,4 +160,25 @@ resource "aws_instance" "app_terraform" {
     aws_security_group.allow_web,
     aws_iam_instance_profile.profile_terraform
   ]
+}
+
+# Outputs
+output "instance_public_ip" {
+  description = "IP pública de la instancia"
+  value       = aws_instance.app_terraform.public_ip
+}
+
+output "ssh_connection_command" {
+  description = "Comando para conectarse por SSH"
+  value       = "ssh -i formacion.pem ec2-user@${aws_instance.app_terraform.public_ip}"
+}
+
+output "vpc_id" {
+  description = "ID de la VPC utilizada"
+  value       = data.aws_vpc.default.id
+}
+
+output "subnet_id" {
+  description = "ID de la subnet utilizada"
+  value       = data.aws_subnets.default.ids[0]
 }
