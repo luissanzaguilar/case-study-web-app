@@ -155,7 +155,7 @@ resource "aws_instance" "app_terraform" {
 
               echo "--- Install GitHub Actions Runner ---"
               sudo yum install -y dotnet-sdk-6.0 # We need this dependency to be installed before the Actions Runner
-              cd
+              cd /home/ec2-user
               mkdir actions-runner && cd actions-runner
               curl -o actions-runner-linux-x64-2.328.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.328.0/actions-runner-linux-x64-2.328.0.tar.gz
               tar xzf ./actions-runner-linux-x64-2.328.0.tar.gz
