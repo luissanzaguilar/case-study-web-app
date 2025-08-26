@@ -57,7 +57,10 @@ jobs:
           path: ./terraform/tfplan
 
       - name: Terraform Apply
-        run: terraform apply -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve -input=false tfplan
+        run: |
+          export TF_VAR_runner_token="tu_token_real"
+          echo 'runner_token = "tu_token_real_enfvars"' > terraform.tfvars
+          terraform apply -var="runner_token=mi_token" -auto-approve -input=false tfplan
         working-directory: ./terraform
         if: ${{ inputs.apply-changes }}
 
