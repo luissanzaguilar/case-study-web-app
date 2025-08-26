@@ -114,7 +114,6 @@ resource "aws_instance" "app_terraform" {
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
   subnet_id              = data.aws_subnets.default.ids[0]
-  associate_public_ip_address = true
 
   user_data = <<-EOF
               #!/bin/bash
@@ -144,6 +143,9 @@ resource "aws_instance" "app_terraform" {
               sudo yum install -y yum-utils shadow-utils
               sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
               sudo yum install -y terraform
+
+              # Start minikube
+              minikube start
 
               echo "=== Instalación completada ==="
               EOF
