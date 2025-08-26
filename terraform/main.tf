@@ -100,7 +100,7 @@ data "aws_vpc" "default" {
   default = true
 }
 
-data "aws_subnets" "default" {
+data "aws_subnet" "default" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.default.id]
@@ -113,7 +113,7 @@ resource "aws_instance" "app_terraform" {
   key_name = "formacion"
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
-  subnet_id              = data.aws_subnets.default.id[0]
+  subnet_id              = data.aws_subnet.default.id
   associate_public_ip_address = true
 
   user_data = <<-EOF
@@ -180,5 +180,5 @@ output "vpc_id" {
 
 output "subnet_id" {
   description = "ID de la subnet utilizada"
-  value       = data.aws_subnets.default.ids[0]
+  value       = data.aws_subnet.default.ids
 }
