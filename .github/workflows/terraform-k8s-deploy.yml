@@ -60,11 +60,11 @@ jobs:
         run: terraform output -json > outputs.json
         working-directory: ./terraform
 
-      - name: Upload Outputs
+      - name: Upload Apply User Data Output
         uses: actions/upload-artifact@v4
         with:
-          name: terraform-outputs
-          path: ./terraform/outputs.json
+          name: apply-output
+          path: /var/log/user-data.log
 
       - name: Success Notification
         if: success()

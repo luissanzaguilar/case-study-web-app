@@ -118,11 +118,16 @@ resource "aws_instance" "app_terraform" {
   user_data = <<-EOF
               #!/bin/bash
               set -e
+              set -x
 
-              # Update system
+              # Create log file
+              exec > >(tee /var/log/user-data.log) 2>&1
+              echo "=== EXECUTING USER_DATA == $(date) ==="
+
+              echo "--- Update system ---"
               sudo yum update -y
 
-              # Install Docker
+              echo "--- Install Docker ---"
               sudo yum install -y docker
               sudo systemctl start docker
               sudo systemctl enable docker
@@ -130,24 +135,25 @@ resource "aws_instance" "app_terraform" {
               sudo systemctl daemon-reload
               sudo systemctl restart docker
 
-              # Install Minikube
+              echo "--- Install Minikube ---"
+              sudo yum install -y conntrack
               curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
               sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 
-              # Start minikube
-              minikube start
-
-              # Install kubectl
+              echo "--- Install kubectl ---"
               sudo curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/linux/amd64/kubectl
               sudo chmod +x ./kubectl
               sudo mv ./kubectl /usr/local/bin/kubectl
 
-              # Install Terraform
+              echo "--- Install Terraform ---"
               sudo yum install -y yum-utils shadow-utils
               sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
               sudo yum install -y terraform
 
-              echo "=== Instalación completada ==="
+              echo "--- Start minikube ---"
+              minikube start
+
+              echo "=== Installation completed ==="
               EOF
 
   root_block_device {
