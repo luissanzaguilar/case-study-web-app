@@ -23,7 +23,6 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: eu-west-3
-      TF_VAR_runner_token: ${{ secrets.RUNNER_TOKEN }}
 
     steps:
       - name: Checkout
@@ -44,7 +43,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -input=false -out=tfplan
+        run: terraform plan -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -input=false -out=tfplan
         working-directory: ./terraform
 
       - name: Terraform Plan Status
@@ -58,7 +57,7 @@ jobs:
           path: ./terraform/tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -input=false tfplan
+        run: terraform apply -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve -input=false tfplan
         working-directory: ./terraform
         if: ${{ inputs.apply-changes }}
 

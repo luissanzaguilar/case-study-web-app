@@ -32,7 +32,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: terraform destroy -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve
         if: ${{ inputs.apply-changes }}
         working-directory: ./terraform
 
