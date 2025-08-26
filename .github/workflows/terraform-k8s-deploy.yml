@@ -23,6 +23,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: eu-west-3
+      TF_VAR_runner_token: "tu_token_real_en_var"
 
     steps:
       - name: Checkout
@@ -58,9 +59,8 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          export TF_VAR_runner_token="tu_token_real"
           echo 'runner_token = "tu_token_real_enfvars"' > terraform.tfvars
-          terraform apply -var="runner_token=mi_token" -auto-approve -input=false tfplan
+          terraform apply -var="runner_token=mi_token" -auto-approve -input=false
         working-directory: ./terraform
         if: ${{ inputs.apply-changes }}
 
