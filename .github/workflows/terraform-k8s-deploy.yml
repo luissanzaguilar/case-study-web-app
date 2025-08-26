@@ -1,4 +1,4 @@
-name: Terraform Deploy Web App (with infra and k8s)
+name: Terraform Deploy Web App
 
 on:
   workflow_dispatch:
