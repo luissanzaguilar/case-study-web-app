@@ -50,7 +50,7 @@ resource "aws_iam_instance_profile" "profile_terraform" {
 }
 
 resource "aws_security_group" "allow_web" {
-  name        = "allow-web-terraform"
+  name_prefix = "allow-web-terraform-"
   description = "Allow SSH, HTTP and HTTP traffic"
 
   # Regla de entrada para SSH (puerto 22)
@@ -91,6 +91,10 @@ resource "aws_security_group" "allow_web" {
 
   tags = {
     Name = "allow-web-terraform"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -140,4 +144,9 @@ resource "aws_instance" "app_terraform" {
   tags = {
     Name = "case-study-2-terraform"
   }
+
+  depends_on = [
+    aws_security_group.allow_web,
+    aws_iam_instance_profile.profile_terraform
+  ]
 }
