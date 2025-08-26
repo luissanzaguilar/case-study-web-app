@@ -139,6 +139,7 @@ jobs:
     needs: [deploy-infra, push-docker]
     runs-on: self-hosted-k8s
     environment: prod
+    if: ${{ inputs.apply-changes }}
     steps:
       - name: Docker Login
         uses: docker/login-action@v3.4.0
