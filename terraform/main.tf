@@ -113,7 +113,7 @@ resource "aws_instance" "app_terraform" {
   key_name = "formacion"
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
-  subnet_id              = data.aws_subnet.default.id
+  subnet_id              = data.aws_subnet.default.id[0]
   associate_public_ip_address = true
 
   user_data = <<-EOF
@@ -162,23 +162,3 @@ resource "aws_instance" "app_terraform" {
   ]
 }
 
-# Outputs
-output "instance_public_ip" {
-  description = "IP pública de la instancia"
-  value       = aws_instance.app_terraform.public_ip
-}
-
-output "ssh_connection_command" {
-  description = "Comando para conectarse por SSH"
-  value       = "ssh -i formacion.pem ec2-user@${aws_instance.app_terraform.public_ip}"
-}
-
-output "vpc_id" {
-  description = "ID de la VPC utilizada"
-  value       = data.aws_vpc.default.id
-}
-
-output "subnet_id" {
-  description = "ID de la subnet utilizada"
-  value       = data.aws_subnet.default.id
-}
