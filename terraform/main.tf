@@ -150,8 +150,8 @@ resource "aws_instance" "app_terraform" {
               sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
               sudo yum install -y terraform
 
-              echo "--- Start minikube ---"
-              minikube start
+              echo "--- Start minikube with ec2-user ---"
+              sudo -u ec2-user minikube start
 
               echo "=== Installation completed ==="
               EOF
