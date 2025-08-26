@@ -2,6 +2,11 @@ name: Terraform Deploy (infra with k8s)
 
 on:
   workflow_dispatch:
+    inputs:
+      apply-changes:
+        description: "Apply changes"
+        type: boolean
+        default: false
 
 env:
   AWS_REGION: eu-west-3
@@ -51,7 +56,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false tfplan
         working-directory: ./terraform
-        if: false
+        if: ${{ inputs.apply }}
 
       - name: Get Terraform Outputs
         run: terraform output -json > outputs.json
@@ -65,6 +70,7 @@ jobs:
 
       - name: Success Notification
         if: success()
+        working-directory: ./terraform
         run: |
           echo "Terraform deployment success!"
           echo "ssh: $(terraform output -raw ssh_connection_command)"
