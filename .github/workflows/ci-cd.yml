@@ -108,7 +108,7 @@ jobs:
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE:latest
           
   deploy-staging:
-    needs: [push-docker, sonar-cloud]
+    needs: [push-docker]
     runs-on: self-hosted-staging
     environment: staging    
     steps:
