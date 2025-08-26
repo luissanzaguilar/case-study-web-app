@@ -134,6 +134,9 @@ resource "aws_instance" "app_terraform" {
               curl -LO https://github.com/kubernetes/minikube/releases/latest/download/minikube-linux-amd64
               sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
 
+              # Start minikube
+              minikube start
+
               # Install kubectl
               sudo curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.29.0/2024-01-04/bin/linux/amd64/kubectl
               sudo chmod +x ./kubectl
@@ -143,9 +146,6 @@ resource "aws_instance" "app_terraform" {
               sudo yum install -y yum-utils shadow-utils
               sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
               sudo yum install -y terraform
-
-              # Start minikube
-              minikube start
 
               echo "=== Instalación completada ==="
               EOF
