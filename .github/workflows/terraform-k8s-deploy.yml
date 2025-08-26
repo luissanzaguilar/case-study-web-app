@@ -80,7 +80,6 @@ jobs:
           echo "log execution of user-data: tail -n 1000 -f /var/log/user-data.log"
 
   sonar-cloud:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
