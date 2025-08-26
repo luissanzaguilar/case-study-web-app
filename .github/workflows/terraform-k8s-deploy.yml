@@ -56,7 +56,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false tfplan
         working-directory: ./terraform
-        if: ${{ inputs.apply }}
+        if: ${{ inputs.apply-changes }}
 
       - name: Get Terraform Outputs
         run: terraform output -json > outputs.json
