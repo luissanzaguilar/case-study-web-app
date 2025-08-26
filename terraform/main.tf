@@ -52,7 +52,7 @@ resource "aws_iam_instance_profile" "profile_terraform" {
 resource "aws_security_group" "allow_web" {
   name_prefix = "allow-web-terraform-"
   description = "Allow SSH, HTTP and HTTP traffic"
-  vpc_id = aws_vpc.main.id
+  vpc_id = "vpc-0614669fa9bd8e9ca"
 
   # Regla de entrada para SSH (puerto 22)
   ingress {
@@ -110,7 +110,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "main" {
-  vpc_id                  = aws_vpc.main.id
+  vpc_id                  = "vpc-0614669fa9bd8e9ca"
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
 
