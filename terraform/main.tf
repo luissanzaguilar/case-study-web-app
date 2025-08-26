@@ -180,5 +180,5 @@ output "vpc_id" {
 
 output "subnet_id" {
   description = "ID de la subnet utilizada"
-  value       = data.aws_subnet.default.ids
+  value       = data.aws_subnet.default.id
 }
