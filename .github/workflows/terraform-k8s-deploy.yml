@@ -24,13 +24,16 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+        working-directory: ./terraform
 
       - name: Terraform Validate
         run: terraform validate
+        working-directory: ./terraform
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -input=false -out=tfplan
+        working-directory: ./terraform
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -48,6 +51,7 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false tfplan
+        working-directory: ./terraform
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -55,6 +59,7 @@ jobs:
 
       - name: Get Terraform Outputs
         run: terraform output -json > outputs.json
+        working-directory: ./terraform
 
       - name: Upload Outputs
         uses: actions/upload-artifact@v4
