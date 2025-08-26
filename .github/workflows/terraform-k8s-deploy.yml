@@ -23,7 +23,7 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: eu-west-3
-      GIT_HUB_REPO_TOKEN: ${{ secrets.GIT_HUB_REPO_TOKEN }}
+      RUNNER_TOKEN: ${{ secrets.RUNNER_TOKEN }}
 
     steps:
       - name: Checkout
