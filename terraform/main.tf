@@ -162,3 +162,23 @@ resource "aws_instance" "app_terraform" {
   ]
 }
 
+output "instance_public_ip" {
+  description = "IP pública de la instancia"
+  value       = aws_instance.app_terraform.public_ip
+}
+
+output "ssh_connection_command" {
+  description = "Comando para conectarse por SSH"
+  value       = "ssh -i formacion.pem ec2-user@${aws_instance.app_terraform.public_ip}"
+}
+
+output "vpc_id" {
+  description = "ID de la VPC utilizada"
+  value       = data.aws_vpc.default.id
+}
+
+output "subnet_id" {
+  description = "ID de la subnet utilizada"
+  value       = data.aws_subnets.default.ids[0]
+}
+
