@@ -2,14 +2,21 @@ name: Terraform Destroy (infra with k8s)
 
 on:
   workflow_dispatch:
-
-env:
-  AWS_REGION: eu-west-3
+    inputs:
+      apply-changes:
+        description: "Apply destroy"
+        type: boolean
+        default: false
 
 jobs:
   destroy:
     runs-on: ubuntu-latest
     environment: prod
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: eu-west-3
 
     steps:
       - name: Checkout
@@ -26,9 +33,6 @@ jobs:
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
+        if: ${{ inputs.apply-changes }}
         working-directory: ./terraform
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
 
