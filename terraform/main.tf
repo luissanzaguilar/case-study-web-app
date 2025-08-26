@@ -99,24 +99,9 @@ resource "aws_security_group" "allow_web" {
   }
 }
 
-resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    Name = "vpc-con-dns-habilitado"
-  }
-}
-
 resource "aws_subnet" "main" {
   vpc_id                  = "vpc-0614669fa9bd8e9ca"
-  cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-
-  tags = {
-    Name = "subnet-con-dns"
-  }
 }
 
 resource "aws_instance" "app_terraform" {
