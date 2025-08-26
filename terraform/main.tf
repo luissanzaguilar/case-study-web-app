@@ -42,17 +42,56 @@ resource "aws_iam_role" "role_terraform" {
 resource "aws_iam_role_policy_attachment" "admin_access" {
   role       = aws_iam_role.role_terraform.name
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-  depends_on = [aws_iam_role.role_terraform]
 }
 
 resource "aws_iam_instance_profile" "profile_terraform" {
   name = "profile-terraform"
   role = aws_iam_role.role_terraform.name
+}
 
-  depends_on = [
-    aws_iam_role.role_terraform
-  ]
+resource "aws_security_group" "allow_web" {
+  name        = "allow-web-terraform"
+  description = "Allow SSH, HTTP and HTTP traffic"
 
+  # Regla de entrada para SSH (puerto 22)
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "SSH access"
+  }
+
+  # Regla de entrada para HTTP (puerto 80)
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP access"
+  }
+
+  # Regla de entrada para HTTP alternativo (puerto 8080)
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Alternative HTTP access"
+  }
+
+  # Regla de salida (todo el tráfico)
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Outbound traffic"
+  }
+
+  tags = {
+    Name = "allow-web-terraform"
+  }
 }
 
 resource "aws_instance" "app_terraform" {
@@ -60,6 +99,7 @@ resource "aws_instance" "app_terraform" {
   instance_type = "m7i-flex.large"
   key_name = "formacion"
   iam_instance_profile = aws_iam_instance_profile.profile_terraform.name
+  vpc_security_group_ids = [aws_security_group.allow_web.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -100,8 +140,4 @@ resource "aws_instance" "app_terraform" {
   tags = {
     Name = "case-study-2-terraform"
   }
-
-  depends_on = [
-    aws_iam_instance_profile.profile_terraform
-  ]
 }
