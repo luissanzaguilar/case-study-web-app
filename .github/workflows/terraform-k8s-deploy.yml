@@ -60,11 +60,11 @@ jobs:
         run: terraform output -json > outputs.json
         working-directory: ./terraform
 
-      - name: Upload Apply User Data Output
+      - name: Upload Outputs
         uses: actions/upload-artifact@v4
         with:
-          name: apply-output
-          path: ./terraform/user-data.log
+          name: terraform-outputs
+          path: ./terraform/outputs.json
 
       - name: Success Notification
         if: success()
@@ -72,3 +72,4 @@ jobs:
         run: |
           echo "Terraform deployment success!"
           echo "ssh: $(terraform output -raw ssh_connection_command)"
+          echo "log execution of user-data: \var\log\user-data.log"
