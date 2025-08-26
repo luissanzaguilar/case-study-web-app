@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: case-study-web-app
+  labels:
+    app: case-study-web-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: case-study-web-app
+  template:
+    metadata:
+      labels:
+        app: case-study-web-app
+    spec:
+      containers:
+        - name: case-study-web-app
+          image: luissanzaguilar/case-study-web-app:latest
+          ports:
+            - containerPort: 8080

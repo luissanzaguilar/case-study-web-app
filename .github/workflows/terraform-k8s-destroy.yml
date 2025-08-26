@@ -1,4 +1,4 @@
-name: Terraform Destroy (infra with k8s)
+name: Terraform Destroy Infra
 
 on:
   workflow_dispatch:
