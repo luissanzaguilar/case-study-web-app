@@ -52,6 +52,7 @@ resource "aws_iam_instance_profile" "profile_terraform" {
 resource "aws_security_group" "allow_web" {
   name_prefix = "allow-web-terraform-"
   description = "Allow SSH, HTTP and HTTP traffic"
+  vpc_id = aws_vpc.main.id
 
   # Regla de entrada para SSH (puerto 22)
   ingress {
