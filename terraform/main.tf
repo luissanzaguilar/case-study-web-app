@@ -113,7 +113,7 @@ resource "aws_instance" "app_terraform" {
   key_name = "formacion"
   iam_instance_profile   = aws_iam_instance_profile.profile_terraform.name
   vpc_security_group_ids = [aws_security_group.allow_web.id]
-  subnet_id              = data.aws_subnet.default.id[0]
+  subnet_id              = data.aws_subnet.default[0].id
   associate_public_ip_address = true
 
   user_data = <<-EOF
