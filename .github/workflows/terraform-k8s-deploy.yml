@@ -59,8 +59,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          echo 'runner_token = "tu_token_real_enfvars"' > terraform.tfvars
-          terraform apply -var="runner_token=mi_token" -auto-approve -input=false
+          terraform apply -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve -input=false
         working-directory: ./terraform
         if: ${{ inputs.apply-changes }}
 
