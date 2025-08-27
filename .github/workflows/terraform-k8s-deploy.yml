@@ -155,8 +155,6 @@ jobs:
         uses: actions/checkout@v5
       - name: Kubectl apply
         working-directory: ./k8s
-        env:
-          APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml

@@ -17,5 +17,8 @@ spec:
       containers:
         - name: case-study-web-app
           image: luissanzaguilar/case-study-web-app:latest
+          env:
+            - name: APP_WELCOME_MESSAGE
+              value: "Deployed in K8s!!! "
           ports:
             - containerPort: 8080
