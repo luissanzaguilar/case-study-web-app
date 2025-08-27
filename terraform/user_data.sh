@@ -37,7 +37,6 @@ sudo -u ec2-user minikube start
 
 echo "--- Install GitHub Actions Runner ---"
 sudo -u ec2-user bash << INNER_EOF
-echo "Token: $runner_token"
 echo "Token: ${runner_token}"
 sudo yum install -y dotnet-sdk-6.0 # We need this dependency to be installed before the Actions Runner
 cd /home/ec2-user

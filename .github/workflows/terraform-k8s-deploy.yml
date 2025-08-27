@@ -59,7 +59,7 @@ jobs:
 
       - name: Terraform Apply
         run: |
-          terraform apply -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve -input=false
+          terraform apply -var="runner_token=${{ secrets.RUNNER_TOKEN }}" -auto-approve -input=false tfplan
         working-directory: ./terraform
         if: ${{ inputs.apply-changes }}
 
