@@ -160,4 +160,13 @@ jobs:
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
-          kubectl port-forward --address 0.0.0.0 service/case-study-web-app 8080:8080 &
+       
+          # kubectl port-forward --address 0.0.0.0 service/case-study-web-app 8080:8080 &
+          # this line does not work, after finishing the step, this process is killed
+          # As I couldn't find a better way, I give manual instructions to get access 
+          # from the public ip to the deployed service
+          echo "K8s deployment completed!"
+          echo "To access from internet you need to execute this in minikube node:"
+          echo "    kubectl port-forward --address 0.0.0.0 service/case-study-web-app 8080:8080"
+          
+          
