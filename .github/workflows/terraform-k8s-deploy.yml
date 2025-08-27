@@ -151,7 +151,9 @@ jobs:
       - name: Pull docker image
         run: |
           docker pull $DOCKER_USERNAME/$DOCKER_IMAGE:latest
-      - name: Docker run STAGING
+      - name: Checkout code
+        uses: actions/checkout@v5
+      - name: Kubectl apply
         working-directory: ./k8s
         env:
           APP_WELCOME_MESSAGE: ${{ vars.APP_WELCOME_MESSAGE }}
