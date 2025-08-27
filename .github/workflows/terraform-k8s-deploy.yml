@@ -160,4 +160,4 @@ jobs:
         run: |
           kubectl apply -f deployment.yaml
           kubectl apply -f service.yaml
-          
+          kubectl port-forward --address 0.0.0.0 service/case-study-web-app 8080:8080 &
